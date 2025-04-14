@@ -1,6 +1,86 @@
-.env
-scripts/__pycache__/
-summary/
-llamaindex_agent.code-workspace
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
 .mypy_cache/
+.pytest_cache/
+
+# Environment files
+.env
+.env.*
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs and runtime
+logs/
+*.log
+
+# Qdrant local storage
 qdrant_storage/
+storage/qdrant/
+storage/llama_index/
+archive/summary/  # Deprecated, future: move to /storage/llama_index/
+
+# Installers / binaries
+*.tar.gz
+installers/
+
+# Tests cache
+.coverage
+htmlcov/
+
+# macOS
+.DS_Store
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# PyInstaller
+*.spec
+
+# Jupyter Notebook checkpoints (optional, if any)
+.ipynb_checkpoints/
+
+# VSCode extensions settings
+.vscode/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# If using Docker
+docker-compose.override.yml
+.env.docker
+
+# Snapshots or temporary backups
+archive/snapshots/
+tmp/
+
+# If using PyCharm
+.idea/
+
+# If using Homebrew on Mac (optional, cache dirs)
+Cellar/
+Caskroom/
+Homebrew/
+
+# Optional: Secrets and keys (always add here)
+*.pem
+*.key
+*.crt
+*.pfx
+*.cert
+*.jks

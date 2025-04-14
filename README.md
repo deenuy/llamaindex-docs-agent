@@ -1,107 +1,245 @@
-<h1 align="center">LlamaIndex Docs Agent</h1>
+# 🦙 LlamaIndex Docs Agent
 
-<h2 align="center">A useful companion when developing with LlamaIndex</h2>
+**An enterprise-grade AI assistant for navigating LlamaIndex documentation.**  
+Refactored for modular, production-ready architecture with FastAPI, ReAct Agent, OpenAI, Qdrant, and Tavily search.  
+Clean, secure, observable, and ready for real-world deployment.
 
-<h3 align="center">If you find LlamaIndex Docs Agent useful, please consider to support us through donation:</h3>
-<div align="center">
-    <a href="https://github.com/sponsors/AstraBert"><img src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA" alt="GitHub Sponsors Badge"></a>
-</div>
-<br>
-<div align="center">
-    <img src="logo.png" alt="LlamaIndex Docs Agent Logo" width=200 height=200>
-</div>
+<p align="center">
+  <img src="https://img.shields.io/github/license/your-repo/llamaindex-docs-agent?style=flat-square" />
+  <img src="https://img.shields.io/badge/Made%20with-FastAPI-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=flat-square" />
+</p>
 
-## Install and launch🚀
+---
 
-The first step, common to both the Docker and the source code setup approaches, is to clone the repository and access it:
+## 🚀 Features
+
+✅ **Multi-Source Retrieval:** Vector + Summary Index with Router Agent  
+✅ **FastAPI with Rich Documentation:** Auto-generated Swagger & Redoc  
+✅ **Security:** API Key-based authentication  
+✅ **Observability:** Global Request ID (ContextVar injection)  
+✅ **Structured Logging:** Context-aware logs for distributed environments  
+✅ **Error Handling:** Unified responses with detailed tracing  
+✅ **Rate Limiting:** Global throttling protection  
+✅ **Health Checks:** Verifies OpenAI, Qdrant, Tavily connectivity  
+✅ **Gradio Interface:** User-friendly web front-end  
+✅ **Enterprise Startup Script:** Robust, idempotent service start  
+✅ **Makefile Automation:** Streamlined install, run, and data load
+
+---
+
+## 📦 Tech Stack
+
+- **Python 3.10+**
+- **FastAPI** — Web framework
+- **Pydantic** — Data validation
+- **Qdrant** — Vector database
+- **OpenAI GPT-4o-mini** — Language model
+- **Tavily API** — Web search augmentation
+- **Gradio** — Front-end UI
+- **SlowAPI** — Rate limiting
+- **ContextVar Logging** — Per-request logging context
+- **Structured Project Layout** — Clean, maintainable architecture
+
+---
+
+## 🛠️ Setup & Installation
+
+### 1. Clone Repository
 
 ```bash
-git clone https://github.com/AstraBert/llamaindex-docs-agent.git
+git clone https://github.com/your-repo/llamaindex-docs-agent.git
 cd llamaindex-docs-agent
 ```
 
-Once there, you can choose one of the two following approaches:
-
-### Docker (recommended)🐋
-
-> _Required: [Docker](https://docs.docker.com/desktop/) and [docker compose](https://docs.docker.com/compose/)_
-
-- Add the `openai_api_key` and the `tavily_api_key` variables in the [`.env.example`](./docker/.env.example) file and modify the name of the file to `.env`. Get these keys:
-    + [On OpenAI Platform](https://platform.openai.com/api-keys)
-    + [On Tavily](https://app.tavily.com/home/)
+### 2. Install Dependencies (Recommended)
 
 ```bash
-mv .env.example .env
+make init
 ```
 
-- Launch the Docker application:
+> ⚙️ This includes `.venv` setup and `pip install -e .`
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in your project root:
 
 ```bash
-# If you are on Linux/macOS
-bash start_services.sh
-# If you are on Windows
-.\start_services.ps1
+OPENAI_API_KEY=your-openai-api-key
+TAVILY_API_KEY=your-tavily-api-key
+API_KEY=your-secure-api-key  # API security token
 ```
 
-You will see the application running on http://localhost:8000/gradio and you will be able to use it. Depending on your connection and on your hardware, the set up might take some time (up to 30 mins to set up) - but this is only for the first time your run it!
+### 4. Start Services
 
-
-### Source code🗎
-
-> _Required: [Docker](https://docs.docker.com/desktop/), [docker compose](https://docs.docker.com/compose/) and [conda](https://anaconda.org/anaconda/conda)_
-
-- Add the `openai_api_key` and the `tavily_api_key` variables in the [`.env.example`](./docker/.env.example) file and modify the name of the file to `.env`. Get these keys:
-    + [On OpenAI Platform](https://platform.openai.com/api-keys)
-    + [On Tavily](https://app.tavily.com/home/)
+We recommend **using the startup script** for seamless bootstrapping:
 
 ```bash
-mv .env.example .env
+bash scripts/start_services.sh
 ```
 
-- Set up LlamaIndex Docs Agent using the dedicated script:
+This script:
+- Starts Qdrant server
+- Waits for readiness
+- Checks vector store collections
+- Auto-loads data if needed
+- Boots FastAPI app
+
+### Alternative: Manual run (Developer mode)
 
 ```bash
-# For MacOs/Linux users
-bash setup.sh
-# For Windows users
-.\setup.ps1
+make load_data  # Load your documents into Qdrant
+make run        # Start FastAPI app
 ```
 
-- Or you can do it manually, if you prefer:
+---
 
-```bash
-docker compose up vector_db -d
+## 🎥 Demo
 
-conda env create -f environment.yml
-conda activate llamaindex-docs
+Launch the Gradio web interface at:  
+**[http://localhost:8000/gradio](http://localhost:8000/gradio)**
 
-python3 scripts/loadData.py
+Example queries:
+- "How do I install LlamaIndex?"
+- "Explain hybrid search in LlamaIndex."
+- "What is a Query Engine Tool?"
 
-cd scripts/
-uvicorn main:app --host 0.0.0.0 --port 8000
+> 🚀 API is also available at:  
+> [http://localhost:8000/docs](http://localhost:8000/docs)
 
-conda deactivate
+---
+
+## ⚙️ API Endpoints
+
+### Health Check
+
+```http
+GET /health
 ```
 
-You will see the application running on http://localhost:8000/gradio and you will be able to use it.
+- Checks OpenAI, Qdrant, Tavily connections
+- Includes `request_id` for traceability
 
-## How it works
+### Chat Endpoint
 
-<div align='center'>
-    <img src="./workflow.png" alt="LlamaIndex Docs Agent workflow">
-</div>
+```http
+POST /message/
+Headers:
+  X-API-KEY: your-api-key
+Body:
+  {
+    "message": "How do I install LlamaIndex?"
+  }
+```
 
-Whenever the user asks a question from the Gradio chat interface running on http://localhost:8000/gradio, this question is processed by the `/message` endpoint of the FastAPI-managed API to which the Gradio app is attached. The `/message` endpoint passes the user message to the ReAct agent, which:
+Response:
+```json
+{
+  "message": "LlamaIndex can be installed using pip install llama-index."
+}
+```
 
-- Uses the query router to select an index (summary or vector database) from which to retrieve relevant information to the user's prompt. The vector database uses hybrid search.
-- Once the retrieved information is sent to the agent, it thinks whether the context is sufficient or not: if yes, it formulates a solution and returns it to the user, if no it activates the Tavily search tool
-- The Tavily search tool searches the web for a solution and returns an answer to the agent, which then decides if the answer is sufficient and, in that case, returns a solution to the user
+---
 
+## 🧩 Project Structure
 
-## Contributing
+```
+app/
+├── agents/               # Agent orchestration
+├── api/                  # FastAPI routers
+├── clients/              # External API clients (Qdrant, Tavily)
+├── data_loader/          # Scripts to load vector store data
+├── frontend/             # Gradio web app
+├── middleware/           # API key, request ID, error handling
+├── retrieval_engine/     # Vector and summary engines
+├── services/             # Business logic layer
+├── utils/                # Logger and config loader
+main.py                   # App entrypoint
+scripts/start_services.sh # Startup script
+Makefile                  # Automation tasks
+```
 
-Contributions are always welcome! Follow the contributions guidelines reported [here](CONTRIBUTING.md).
+---
 
-## License and rights of usage
+## 🚦 Roadmap
 
-The software is provided under MIT [license](./LICENSE).
+- [x] Logging with Request ID (ContextVar)
+- [x] Modular app architecture
+- [x] API security (X-API-KEY)
+- [x] Health checks with OpenAI, Qdrant, Tavily
+- [x] Gradio web front-end
+- [x] Startup script for idempotent service start
+- [ ] Dockerization (`Dockerfile`, `docker-compose.yml`)
+- [ ] Test coverage with pytest
+- [ ] CI/CD pipeline (GitHub Actions)
+- [ ] OpenTelemetry for distributed tracing
+
+---
+
+## ✅ Testing & Quality Assurance
+
+Coming soon:
+- Unit tests with pytest
+- API tests with HTTPX
+- GitHub Actions CI/CD pipeline
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+See [LICENSE](LICENSE) for details.
+
+---
+
+## 🙌 Acknowledgements
+
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [LlamaIndex](https://www.llamaindex.ai/)
+- [Qdrant](https://qdrant.tech/)
+- [Tavily](https://tavily.com/)
+- [OpenAI](https://openai.com/)
+
+---
+
+## 🙏 Credits & Attribution
+
+This project is inspired by and originally designed by [Astra Bertelli (AstraBert)](https://github.com/AstraBert/llamaindex-docs-agent).
+
+Her pioneering work laid the foundation for:
+- ReAct agent design
+- Retrieval orchestration with LlamaIndex
+- Initial FastAPI API and Gradio integration
+
+I have refactored and extended this project to:
+- ✅ Enterprise-grade architecture
+- ✅ Modular service & agent design
+- ✅ Middleware-first pattern for security, logging, observability
+- ✅ FastAPI best practices for production
+- ✅ End-to-end request tracing with ContextVar
+
+> 🔥 Full respect to AstraBert for her original contribution!
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork it 🚀
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -am 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a pull request 🎉
+
+> ⭐ Star the repo to show your support!
+
+---
+
+## 📬 Contact
+
+> Built and maintained by **Deenu Gengiti**  
+> 📫 Reach out: deenuy@gmail.com
+
+---

@@ -1,0 +1,65 @@
+[project]
+name = "app"
+version = "0.2.0"
+description = "A useful companion when developing with LlamaIndex"
+authors = [
+    { name = "Deenu Gengiti", email = "deenuy@gmail.com" },
+    { name = "Clelia (Astra) Bertelli", email = "astra.bertelli01@universitadipavia.it" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    # Core app
+    "fastapi==0.115.12",
+    "uvicorn==0.34.0",
+    "httpx==0.28.1",
+    "python-dotenv==1.0.1",
+    "pydantic==2.10.6",
+    "slowapi==0.1.9",
+
+    # Vector store & ML ecosystem
+    "qdrant-client==1.13.2",
+    "llama-index==0.12.30",
+    "llama-index-agent-openai==0.4.6",
+    "llama-index-vector-stores-qdrant==0.6.0",
+    "llama-index-llms-openai==0.3.33",
+    "llama-parse==0.6.12",
+    "openai==1.73.0",
+    "tavily-python==0.5.1",
+    "fastembed",
+
+    # Frontend (Gradio)
+    "gradio==5.12.0",
+
+    # Utilities & Developer Experience
+    "loguru==0.7.3",
+    "rich==13.9.4",
+    "pandas==2.2.3",
+    "numpy==2.2.3",
+    "typing-extensions==4.12.2",
+    "typing-inspect==0.9.0",
+
+    # Documentation tooling
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-material-extensions",
+    "mkdocs-section-index",
+    "mkdocstrings[python]",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "ruff",
+    "pytest",
+    "pre-commit"
+]
+
+[tool.setuptools]
+packages = ["app"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

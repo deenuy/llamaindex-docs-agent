@@ -1,6 +1,6 @@
 .env.example
 llamaindex_agent.code-workspace
 .mypy_cache/
-scripts/
-summary/
+archive/scripts/
+archive/summary/
 qdrant_storage/

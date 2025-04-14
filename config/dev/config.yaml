@@ -1,0 +1,48 @@
+# =========================
+# 📂 Application Configuration Paths
+# =========================
+paths:
+  data_dir: "data"
+  vector_db_root: "persistent_db/vector_db/qdrant"
+  collection: "llamaindex-docs"
+  index_db_dir: "persistent_db/index_db/llamaindex"
+  snapshots_dir: "persistent_db/vector_db/snapshots"
+  backups_dir: "persistent_db/vector_db/backups"
+
+# =========================
+# 📝 Logging Configuration
+# =========================
+logs:
+  dir: logs/
+  fname: vector-db-app.log
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  when: midnight
+  backup_count: 5
+  retention_days: 7
+
+# =========================
+# 💾 Qdrant Vector Database Configuration
+# =========================
+qdrant:
+  # Connection mode: "local" for file-based or "remote" for HTTP/gRPC
+  mode: "local"
+  # Storage configuration
+  storage:
+    storage_path: "./persistent_db/vector_db/qdrant_server"
+
+  # Service configuration (used when running Qdrant server)
+  service:
+    host: "0.0.0.0"
+    http_port: 6333
+    grpc_port: 6334
+  # Vector configuration
+  vectors:
+    size: 1536  # For OpenAI's text-embedding-3-small
+    distance: "Cosine"
+    on_disk: true
+  # HNSW index configuration
+  optimization:
+    indexing_threshold: 20000
+    m: 16
+    ef_construct: 100
